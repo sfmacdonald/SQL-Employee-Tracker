@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS Roles (
 );
 
 CREATE TABLE IF NOT EXISTS Employees (
-    EmployeeID CHAR(7) NOT NULL,
+    EmployeeID INT AUTO_INCREMENT,
+    UniqueID CHAR (7) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
     RoleID INT,
