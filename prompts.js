@@ -30,6 +30,11 @@ const questions = {
   addEmployee: [
     {
       type: 'input',
+      name: 'employeeId',
+      message: 'What is the employee ID for the new employee? (format: two letters, a hyphen, then 4 digits of your choosing)'
+    },
+    {
+      type: 'input',
       name: 'firstName',
       message: 'What is the first name of the new employee?'
     },
