@@ -50,4 +50,4 @@ Testing may be accomplished manually by:
 1. Acessing the database via Node JS
 2. When prompted, select the table that you wish to update (Departments, Roles, Employees)
 3. Follow the onscreen prompts inputting the requested data
-4. Once completed, review the additions/updates via myql
+4. Once completed, review the additions/updates via mysql

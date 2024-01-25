@@ -3,13 +3,13 @@ USE EmployeeManagementDB;
 
 CREATE TABLE IF NOT EXISTS Departments (
     DepartmentID INT AUTO_INCREMENT,
-    DepartmentName VARCHAR(100) NOT NULL,
+    DepartmentName VARCHAR(30) NOT NULL,
     PRIMARY KEY (DepartmentID)
 );
 
 CREATE TABLE IF NOT EXISTS Roles (
     RoleID INT AUTO_INCREMENT,
-    Title VARCHAR(100) NOT NULL,
+    Title VARCHAR(30) NOT NULL,
     Salary DECIMAL(10, 2) NOT NULL,
     DepartmentID INT,
     PRIMARY KEY (RoleID),
@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS Roles (
 
 CREATE TABLE IF NOT EXISTS Employees (
     EmployeeID CHAR(7) NOT NULL,
-    FirstName VARCHAR(100) NOT NULL,
-    LastName VARCHAR(100) NOT NULL,
+    FirstName VARCHAR(30) NOT NULL,
+    LastName VARCHAR(30) NOT NULL,
     RoleID INT,
     ManagerID INT,
     PRIMARY KEY (EmployeeID),
