@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS EmployeeManagementDB;
+DROP DATABASE IF EXISTS EmployeeManagementDB;
+CREATE DATABASE EmployeeManagementDB;
+
 USE EmployeeManagementDB;
 
 CREATE TABLE IF NOT EXISTS Departments (
@@ -18,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Roles (
 
 CREATE TABLE IF NOT EXISTS Employees (
     EmployeeID INT AUTO_INCREMENT,
-    UniqueID CHAR (7) NOT NULL,
+    OperatingNumber CHAR (7) NOT NULL,
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
     RoleID INT,
