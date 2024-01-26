@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const { askQuestions, processAnswers } = require('./questions');
+const { askQuestions, processAnswers } = require('./prompts');
 const {
   getDepartments,
   getDepartmentId,
