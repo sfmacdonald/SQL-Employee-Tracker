@@ -30,8 +30,8 @@ const questions = {
   addEmployee: [
     {
       type: 'input',
-      name: 'employeeId',
-      message: 'What is the employee ID for the new employee? (format: two letters, a hyphen, then 4 digits of your choosing)'
+      name: 'operatingNumber',
+      message: 'What is the operating number for the new employee? Follow the format: two letters, a hyphen, then 4 digits of your choosing (i.e. AB-1234)'
     },
     {
       type: 'input',

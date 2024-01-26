@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Roles (
     RoleID INT AUTO_INCREMENT,
     Title VARCHAR(30) NOT NULL,
     Salary DECIMAL(10, 2) NOT NULL,
-    DepartmentID INT,
+    DepartmentID INT AUTO_INCREMENT,
     PRIMARY KEY (RoleID),
     FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
 );

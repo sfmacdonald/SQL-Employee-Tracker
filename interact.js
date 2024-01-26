@@ -9,6 +9,3 @@ const connection = mysql.createConnection({
   password: '',
   database: 'employee_management'
 });
-
-
-
