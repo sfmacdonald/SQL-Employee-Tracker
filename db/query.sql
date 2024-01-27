@@ -28,9 +28,9 @@ WHERE r.DepartmentID = department_id;
 --Delete departments:
 DELETE FROM Departments WHERE DepartmentID = department_id;
 
-V--iew the total utilized budget of a department:
-SELECT r.DepartmentID, SUM(e.Salary) AS TotalBudget
+SELECT r.DepartmentID, d.DepartmentName, SUM(e.Salary) AS TotalBudget
 FROM Employees e
 JOIN Roles r ON e.RoleID = r.RoleID
+JOIN Departments d ON r.DepartmentID = d.DepartmentID
 WHERE r.DepartmentID = department_id
-GROUP BY r.DepartmentID;
+GROUP BY r.DepartmentID, d.DepartmentName;
