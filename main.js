@@ -25,4 +25,14 @@ const connection = mysql.createConnection({
 
 // Use inquirer to prompt user input
 inquirer.prompt(askQuestions(process.argv[2]))
-  .then(processAnswers(process.argv[2], connection));
+  .then((answers) => {
+    return new Promise((resolve, reject) => {
+      processAnswers(process.argv[2], connection, answers)
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    });
+  })
+  .catch((err) => {
+    console.error(err);
+    connection.end();
+});
