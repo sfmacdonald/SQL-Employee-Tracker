@@ -1,4 +1,9 @@
 const inquirer = require('inquirer');
+const {
+  getDepartments,
+  getRoles,
+  getEmployees
+} = require('./database');
 
 // Define questions for inquirer
 const questions = {

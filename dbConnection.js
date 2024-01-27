@@ -1,4 +1,3 @@
-const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
 // Create a MySQL connection
@@ -9,3 +8,5 @@ const connection = mysql.createConnection({
   password: '',
   database: 'employee_management'
 });
+
+module.exports = { connection };

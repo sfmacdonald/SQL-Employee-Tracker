@@ -1,21 +1,15 @@
-const mysql = require('mysql2');
-
-// Create a MySQL connection
-const connection = mysql.createConnection({
-  host: '127.0.0.1',
-  port: 5502,
-  user: 'root',
-  password: '',
-  database: 'employee_management'
-});
+const { connection } = require('./dbConnection');
 
 function addDepartment(name) {
-  connection.query('INSERT INTO department (name) VALUES (?)', [name], (err, results) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('Department added successfully!');
-    }
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO department (name) VALUES (?)', [name], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log('Department added successfully!');
+        resolve();
+      }
+    });
   });
 }
 
@@ -32,12 +26,15 @@ function getDepartmentId(name) {
 }
 
 function addRole(title, salary, departmentId) {
-  connection.query('INSERT INTO role (title, salary) VALUES (?, ?)', [title, salary], (err, results) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('Role added successfully!');
-    }
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [title, salary, departmentId], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log('Role added successfully!');
+        resolve();
+      }
+    });
   });
 }
 
@@ -54,22 +51,28 @@ function getRoleId(title) {
 }
 
 function addEmployee(operatingNumber, firstName, lastName, roleId, managerId) {
-  connection.query('INSERT INTO employee (operating_number, first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?, ?)', [operatingNumber, firstName, lastName, roleId, managerId], (err, results) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('Employee added successfully!');
-    }
+  return new Promise((resolve, reject) => {
+    connection.query('INSERT INTO employee (operating_number, first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?, ?)', [operatingNumber, firstName, lastName, roleId, managerId], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log('Employee added successfully!');
+        resolve();
+      }
+    });
   });
 }
 
 function updateEmployeeRole(employeeId, roleId) {
-  connection.query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId], (err, results) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('Employee role updated successfully!');
-    }
+  return new Promise((resolve, reject) => {
+    connection.query('UPDATE employee SET role_id = ? WHERE id = ?', [roleId, employeeId], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log('Employee role updated successfully!');
+        resolve();
+      }
+    });
   });
 }
 
