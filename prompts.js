@@ -1,9 +1,4 @@
 const inquirer = require('inquirer');
-const {
-  getDepartments,
-  getRoles,
-  getEmployees
-} = require('./database');
 
 // Define questions for inquirer
 const questions = {
@@ -29,7 +24,10 @@ const questions = {
       type: 'list',
       name: 'department',
       message: 'Which department does the new role belong to?',
-      choices: () => getDepartments()
+      choices: async () => {
+        const departments = await getDepartments();
+        return departments.map(department => ({ name: department.name, value: department.id }));
+      }
     }
   ],
   addEmployee: [
@@ -52,13 +50,19 @@ const questions = {
       type: 'list',
       name: 'role',
       message: 'What is the role of the new employee?',
-      choices: () => getRoles()
+      choices: async () => {
+        const roles = await getRoles();
+        return roles.map(role => ({ name: role.title, value: role.id }));
+      }
     },
     {
       type: 'list',
       name: 'manager',
       message: 'Who is the manager of the new employhee?',
-      choices: () => getEmployees()
+      choices: async () => {
+        const employees = await getEmployees();
+        return employees.map(employee => ({ name: `${employee.firstName} ${employee.lastName}`, value: employee.id }));
+      }
     }
   ],
   updateEmployeeRole: [
@@ -66,13 +70,19 @@ const questions = {
       type: 'list',
       name: 'employee',
       message: 'Which employee do you want to update?',
-      choices: () => getEmployees()
+      choices: async () => {
+        const employees = await getEmployees();
+        return employees.map(employee => ({ name: `${employee.firstName} ${employee.lastName}`, value: employee.id }));
+      }
     },
     {
       type: 'list',
       name: 'role',
       message: 'Which role do you want to assign to the employee?',
-      choices: () => getRoles()
+      choices: async () => {
+        const roles = await getRoles();
+        return roles.map(role => ({ name: role.title, value: role.id }));
+      }
     }
   ]
 };
