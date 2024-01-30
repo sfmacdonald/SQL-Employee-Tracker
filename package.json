@@ -2,16 +2,18 @@
   "name": "sql-employee-tracker",
   "version": "1.0.0",
   "description": "Maintain employee records",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": ""
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/sfmacdonald/SQL-Employee-Tracker.git"
   },
   "keywords": [
-    "employee"
+    "node.js",
+    "inquirer",
+    "mysql"
   ],
   "author": "Sean MacDonald",
   "license": "ISC",
@@ -20,7 +22,7 @@
   },
   "homepage": "https://github.com/sfmacdonald/SQL-Employee-Tracker#readme",
   "dependencies": {
-    "inquirer": "^9.2.12",
-    "mysql2": "^3.8.0"
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.9.1"
   }
 }
