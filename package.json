@@ -23,6 +23,7 @@
   "homepage": "https://github.com/sfmacdonald/SQL-Employee-Tracker#readme",
   "dependencies": {
     "inquirer": "^8.2.4",
-    "mysql2": "^3.9.1"
+    "mysql2": "^3.9.1",
+    "readline-sync": "^1.4.10"
   }
 }

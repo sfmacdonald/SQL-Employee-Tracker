@@ -1,10 +1,11 @@
 // main.js
+const readlineSync = require('readline-sync');
 const inquirer = require('inquirer');
-const { connection } = require('./dbConnection'); // Import the connection from dbConnection.js
+const { connection } = require('./dbConnection');
 
 // Define questions for inquirer
 const questions = {
-  addDepartment: [
+  Department: [
     {
       type: 'input',
       name: 'name',
@@ -26,14 +27,7 @@ const questions = {
       type: 'list',
       name: 'department',
       message: 'Which department does the new role belong to?',
-      choices: () => {
-        return getDepartments().then(departments => {
-          return departments.map(department => ({ name: department.name, value: department.id }));
-        }).catch(err => {
-          console.error(err);
-          return [];
-        });
-      }
+      choices: () => getDepartments()
     }
   ],
   addEmployee: [
@@ -56,27 +50,13 @@ const questions = {
       type: 'list',
       name: 'role',
       message: 'What is the role of the new employee?',
-      choices: () => {
-        return getRoles().then(roles => {
-          return roles.map(role => ({ name: role.title, value: role.id }));
-        }).catch(err => {
-          console.error(err);
-          return [];
-        });
-      }
+      choices: () => getRoles()
     },
     {
       type: 'list',
       name: 'manager',
       message: 'Who is the manager of the new employee?',
-      choices: () => {
-        return getEmployees().then(employees => {
-          return employees.map(employee => ({ name: `${employee.firstName} ${employee.lastName}`, value: employee.id }));
-        }).catch(err => {
-          console.error(err);
-          return [];
-        });
-      }
+      choices: () => getEmployees()
     }
   ],
   updateEmployeeRole: [
@@ -84,34 +64,16 @@ const questions = {
       type: 'list',
       name: 'employee',
       message: 'Which employee do you want to update?',
-      choices: () => {
-        return getEmployees().then(employees => {
-          return employees.map(employee => ({ name: `${employee.firstName} ${employee.lastName}`, value: employee.id }));
-        }).catch(err => {
-          console.error(err);
-          return [];
-        });
-      }
+      choices: () => getEmployees()
     },
     {
       type: 'list',
       name: 'role',
       message: 'Which role do you want to assign to the employee?',
-      choices: () => {
-        return getRoles().then(roles => {
-          return roles.map(role => ({ name: role.title, value: role.id }));
-        }).catch(err => {
-          console.error(err);
-          return [];
-        });
-      }
+      choices: () => getRoles()
     }
   ]
 };
-
-function askQuestions(choice) {
-  return questions[choice];
-}
 
 // Implementations of database-related functions
 
@@ -131,94 +93,102 @@ function addDepartment(name) {
 }
 
 // Get a department ID by its name
-function getDepartmentId(name) {
+function getDepartments() {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT id FROM department WHERE name = ?';
-    connection.query(query, [name], (err, results) => {
+    const query = 'SELECT * FROM department';
+    connection.query(query, (err, results) => {
       if (err) {
+        console.error('Error fetching departments:', err);
         reject(err);
       } else {
-        resolve(results[0].id);
+        resolve(results.map(row => row.name));
       }
     });
   });
 }
 
-// Add a new role to the database
-function addRole(title, salary, departmentId) {
+function getRoles() {
   return new Promise((resolve, reject) => {
-    const query = 'INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)';
-    connection.query(query, [title, salary, departmentId], (err, results) => {
+    const query = 'SELECT * FROM role';
+    connection.query(query, (err, results) => {
       if (err) {
+        console.error('Error fetching roles:', err);
         reject(err);
       } else {
-        console.log('Role added successfully!');
-        resolve(results);
+        resolve(results.map(row => row.title));
       }
     });
   });
 }
 
-// Get a role ID by its title
-function getRoleId(title) {
+function getEmployees() {
   return new Promise((resolve, reject) => {
-    const query = 'SELECT id FROM role WHERE title = ?';
-    connection.query(query, [title], (err, results) => {
+    const query = 'SELECT * FROM employee';
+    connection.query(query, (err, results) => {
       if (err) {
+        console.error('Error fetching employees:', err);
         reject(err);
       } else {
-        resolve(results[0].id);
+        resolve(results.map(row => `${row.first_name} ${row.last_name}`));
       }
     });
   });
 }
-
-// Add a new employee to the database
-function addEmployee(operatingNumber, firstName, lastName, roleId, managerId) {
-  return new Promise((resolve, reject) => {
-    const query = 'INSERT INTO employee (operating_number, first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?, ?)';
-    connection.query(query, [operatingNumber, firstName, lastName, roleId, managerId], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        console.log('Employee added successfully!');
-        resolve(results);
-      }
-    });
-  });
-}
-
-// Update an employee's role
-function updateEmployeeRole(employeeId, roleId) {
-  return new Promise((resolve, reject) => {
-    const query = 'UPDATE employee SET role_id = ? WHERE id = ?';
-    connection.query(query, [roleId, employeeId], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        console.log('Employee role updated successfully!');
-        resolve(results);
-      }
-    });
-  });
-}
-
 
 // Process answers based on choice, connection, and answers
-function processAnswers(choice, connection, answers) {
+async function processAnswers(choice, connection, answers) {
   // Implement logic to process answers based on the choice
   switch (choice) {
     case 'addDepartment':
-      // Process adding a department
+      try {
+        await addDepartment(answers.name);
+        connection.end();
+      } catch (err) {
+        console.error('Error adding department:', err);
+        connection.end();
+        process.exit(1);
+      }
       break;
     case 'addRole':
-      // Process adding a role
+      try {
+        const departmentId = await getDepartmentId(answers.department);
+        await addRole(answers.title, answers.salary, departmentId);
+        connection.end();
+      } catch (err) {
+        console.error('Error adding role:', err);
+        connection.end();
+        process.exit(1);
+      }
       break;
     case 'addEmployee':
-      // Process adding an employee
+      try {
+        // Validate operatingNumber format
+        const opNumRegex = /^[A-Za-z]{2}-\d{4}$/;
+        if (!opNumRegex.test(answers.operatingNumber)) {
+          console.error('Invalid operating number format. Please follow the format: AB-1234');
+          connection.end();
+          process.exit(1);
+        }
+
+        const [roleId, managerId] = await Promise.all([getRoleId(answers.role), getEmployeeId(answers.manager)]);
+        await addEmployee(answers.operatingNumber, answers.firstName, answers.lastName, roleId, managerId);
+        connection.end();
+      } catch (err) {
+        console.error('Error adding employee:', err);
+        connection.end();
+        process.exit(1);
+      }
       break;
     case 'updateEmployeeRole':
-      // Process updating an employee's role
+      try {
+        const [employeeId, roleId] = await Promise.all([getEmployeeId(answers.employee), getRoleId(answers.role)]);
+        await updateEmployeeRole(employeeId, roleId);
+        connection.end();
+      } catch (err) {
+        console.error('Error updating employee role:', err);
+        connection.end();
+        process.exit(1);
+      }
       break;
     // ... (Other cases as needed)
   }
@@ -232,22 +202,26 @@ process.on('SIGINT', () => {
 });
 
 // Main inquirer prompt flow
-inquirer.prompt(askQuestions(process.argv[2]))
-  .then((answers) => {
-    return processAnswers(process.argv[2], connection, answers);
+const choice = process.argv[2] || 'addDepartment'; // Set a default value if process.argv[2] is not defined
+inquirer.prompt(questions[choice])
+  .then(async (answers) => {
+    await processAnswers(choice, connection, answers);
   })
   .then(() => {
     console.log('Operation completed successfully.');
-    connection.end();
   })
   .catch((err) => {
-    console.error(err);
-    connection.end();
+    console.error('Error during operation:', err);
     process.exit(1); // Exit with error code 1
   });
 
 // Export necessary functions
 module.exports = {
-  askQuestions,
-  // ... (Other exports as needed)
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployeeRole,
+  getDepartments,
+  getRoles,
+  getEmployees
 };
