@@ -263,7 +263,7 @@ async function processAnswers(choice) {
       break;
 
     default:
-      console.log("Exiting...");
+      console.log("Now exiting the Death Star Employee Database. Goodbye");
       connection.end();
       process.exit(0);
   }
@@ -276,7 +276,7 @@ async function main() {
     {
       type: "list",
       name: "choice",
-      message: "What do you want to do?",
+      message: "Welcome to the Death Star Employee Database. What would you like to do?",
       choices: [
         { name: "Add a department", value: "addDepartment" },
         { name: "Add a role", value: "addRole" },
