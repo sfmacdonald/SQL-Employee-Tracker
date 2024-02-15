@@ -16,14 +16,12 @@ WHERE r.DepartmentID = department_id;
 
 --Delete departments, roles, and employees:
 --Delete employees associated with a role:
-DELETE e
-FROM Employees e
-WHERE e.RoleID = role_id;
+DELETE FROM Employees
+WHERE RoleID = role_id;
 
 --Delete roles associated with a department:
-DELETE r
-FROM Roles r
-WHERE r.DepartmentID = department_id;
+DELETE FROM Roles
+WHERE DepartmentID = department_id;
 
 --Delete departments:
 DELETE FROM Departments WHERE DepartmentID = department_id;
@@ -34,3 +32,6 @@ JOIN Roles r ON e.RoleID = r.RoleID
 JOIN Departments d ON r.DepartmentID = d.DepartmentID
 WHERE r.DepartmentID = department_id
 GROUP BY r.DepartmentID, d.DepartmentName;
+
+--Remember to replace department_id, new_manager_id, employee_id, and role_id with actual
+--values or parameters depending on how you execute these queries in your application.
