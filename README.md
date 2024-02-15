@@ -41,7 +41,7 @@ This terminal app has the following features and functions:
 
 The github repository may be found at https://github.com/sfmacdonald/SQL-Employee-Tracker
 
-See attached screenrecording for demonstration: 
+See attached screenrecording for demonstration: https://drive.google.com/file/d/1iti_YL-oIBPbyuSFFmsYQfb8Z5C78DBS/view
 
 ## Testing
 

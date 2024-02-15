@@ -81,7 +81,7 @@ const questions = {
 // Add a new department to the database
 function addDepartment(name) {
   return new Promise((resolve, reject) => {
-    const query = "INSERT INTO department (name) VALUES (?)";
+    const query = "INSERT INTO departments (DepartmentName) VALUES (?)";
     connection.query(query, [name], (err, results) => {
       if (err) {
         reject(err);
